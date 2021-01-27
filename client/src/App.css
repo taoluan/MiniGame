@@ -12,9 +12,20 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.welcome-row{
+  background-color: #e0e4ec;
+}
+.mt-4{
+  margin-top: 40px!important;
+}
+.mb-4{
+  margin-bottom: 40px!important;
+}
+.text-font{
+  font-family: Georgia, serif;
+}
 .App-header {
-  background-color: #282c34;
+  background-color: #93a2c0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
