@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 var socket;
 export const connectionSocket = (name,cb)=>{
-    socket = io(process.env.REACT_APP_SOCKET_ENDPOINT)
+    socket = io(process.env.REACT_APP_SOCKET_ENDPOIN || "http://localhost:8080")
     socket.emit('setName',name)
     socket.on('profile',(data)=>cb(null,data))
     // console.log('123')
