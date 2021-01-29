@@ -28,9 +28,9 @@ io.on('connection', (socket) => {
     socket.on('setName',(name)=>controllerSocket.setName(name,socket,io))
     socket.on('sendQuestionServer',(data)=>controllerSocket.sendQuestionServer(data,socket,io))
     socket.on('sendAnswer',(data)=>controllerSocket.sendAnswer(data,socket,io))
-    socket.on('searchKey',(data)=>controllerSocket.searchKey(socket,io))
+    socket.on('searchKey',(data)=>controllerSocket.searchKey(data,socket,io))
     // socket.on('checkUser',(client)=>controllerSocket.checkUser(client.socket,io))
-    controllerSocket.checkKey(socket,io)
+    // controllerSocket.checkKey(socket,io)
     socket.on('disconnect',()=>controllerSocket.disconnect(socket,io));
   });
 

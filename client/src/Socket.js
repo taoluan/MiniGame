@@ -34,8 +34,8 @@ export const recQuestion = (cb)=>{
 export const sendAnswer = (data)=>{
     socket.emit('sendAnswer',data)
 }
-export const searchKey = ()=>{
-    socket.emit('searchKey')
+export const searchKey = (data)=>{
+    socket.emit('searchKey',data)
 }
 export const sendAnswerClient = (cb)=>{
     socket.on('sendAnswerClient',data=>{

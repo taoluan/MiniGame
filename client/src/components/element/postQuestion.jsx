@@ -46,7 +46,7 @@ const PostQuestion = (props)=> {
         }
     };
     const handleCancel = () => {
-        searchKey()
+        searchKey({name: sessionStorage.getItem('name') , id:sessionStorage.getItem('id')})
         props.hiden()
     };
     return (

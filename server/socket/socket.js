@@ -21,6 +21,7 @@ module.exports ={
             io.to(key.id).emit("sendkey","true");
             // console.log(queueClients)
         }
+        console.log(queueClients)
     },
     sendQuestionServer: (data,socket,io)=>{
         question.questions = data.questions
@@ -72,7 +73,14 @@ module.exports ={
         io.emit("sendAnswerClient", queueAnswer);
     },
     disconnect: (socket,io)=>{
-        console.log('user disconnected'+socket.id);
+        // console.log('user disconnected'+socket.id);
+        // console.log(key)
+        if(queueClients.length > 1 && socket.id === key.id){
+            const setRoot = queueClients[queueClients.length-1]
+            key.id = setRoot.id
+            key.name = setRoot.name
+            io.to(key.id).emit("sendkey","true");
+        }
         let queueTemp = []
         for( let i=0 ;  i < queueClients.length; i++){
             let c = queueClients[i];
@@ -92,7 +100,9 @@ module.exports ={
         }
         return io.to(client.id).emit('checkResult', {result : false});
     },
-    checkKey:(socket,io)=>{
-        console.log(question)
+    searchKey:(data,socket,io)=>{
+        key.id = data.id
+        key.name = data.name
+        io.to(key.id).emit("sendkey","true");
     }
 }
