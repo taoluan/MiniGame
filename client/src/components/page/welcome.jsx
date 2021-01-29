@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from 'react'
-import {connectionSocket, disconnectSocket} from '../../Socket'
-import { useHistory } from 'react-router-dom';
+import { useHistory , Route} from 'react-router-dom';
 import { Row, Col, Divider } from 'antd';
 import { Input, Tooltip } from 'antd';
 import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 import openNotification from '../element/openNotification'
 import 'antd/dist/antd.css';
 import '../../App.css';
-
+let socket;
 const Welcome = ()=>{
+    useEffect(() => {
+        sessionStorage.removeItem('name')
+        sessionStorage.removeItem('id')
+    }, []);
     const history = useHistory();
     const handleEnter = (e)=>{
         let ten = e.target.value 
         if( ten.length >= 4 && ten.length <= 16){
-            connectionSocket(ten)
+            sessionStorage.setItem('name', ten);
             history.push('/main')
+            // connectionSocket(ten,(err,data)=>{
+            //     if(err) return;
+            //     sessionStorage.setItem('id', data.id);
+            //     sessionStorage.setItem('name', data.name);
+            //     history.push('/main')
+            // })
         }else{
             openNotification('warning','Lỗi rồi','Vui lòng nhập tên có từ 4 - 16 ký tự')
         }
     }
     return(
+        <Route>
         <div className="App">
         <header className="App-header">
             <Row className="welcome-row">
@@ -43,6 +53,7 @@ const Welcome = ()=>{
             </Row>
         </header>
       </div>
+      </Route>
     )
 }
 export default Welcome

@@ -3,15 +3,20 @@ const morgan = require("morgan")
 const cors = require("cors")
 const dotenv = require('dotenv')
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 const routesAPI = require('./routes/api')
 const helmet = require('helmet')
 const server = require('http').Server(app);
+const controllerSocket = require('./socket/socket')
 const io = require('socket.io')(server,{
     cors: {
         origin: '*',
       }
 });
+var clients =[]
+const queueClients = []
+const queueQuestion = []
+const key = {}
 dotenv.config()
 app.use(cors())
 app.use(morgan('dev'))
@@ -19,22 +24,14 @@ app.use(express.json())
 app.use(helmet())
 
 app.use('/api',routesAPI)
-const queue = []
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('setName',(name)=>{
-        console.log(`${socket.id} co ten la ${name}`)
-        queue.unshift({socketID: socket.id , name : name})
-        console.log(queue)
-    })
-    if(queue.length > 0) {
-        const setRoot = queue.pop()
-        io.to(setRoot.socketID).emit("root", "master")
-    }
-    // socket.emit('postQuestion',())
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
+    socket.on('setName',(name)=>controllerSocket.setName(name,socket,io))
+    socket.on('sendQuestionServer',(data)=>controllerSocket.sendQuestionServer(data,socket,io))
+    socket.on('sendAnswer',(data)=>controllerSocket.sendAnswer(data,socket,io))
+    socket.on('searchKey',(data)=>controllerSocket.searchKey(socket,io))
+    // socket.on('checkUser',(client)=>controllerSocket.checkUser(client.socket,io))
+    controllerSocket.checkKey(socket,io)
+    socket.on('disconnect',()=>controllerSocket.disconnect(socket,io));
   });
 
 server.listen(port, ()=>{
